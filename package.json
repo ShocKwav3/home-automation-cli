@@ -1,0 +1,16 @@
+{
+  "name": "home-automation-cli",
+  "version": "1.0.0",
+  "description": "Cli tool used for device registration",
+  "main": "index.js",
+  "author": "ShocKwav3_",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.20.0",
+    "chalk": "^4.1.0",
+    "cli-table3": "^0.6.0",
+    "clui": "^0.3.6",
+    "inquirer": "^7.3.3",
+    "lodash": "^4.17.20",
+  }
+}
