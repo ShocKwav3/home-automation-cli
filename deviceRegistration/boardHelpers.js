@@ -1,27 +1,35 @@
-const logHelpers = require('../helpers/logHelpers');
+const _ = require('lodash');
 
 
-const sanitizeBoardName = (boardName) => boardName.substring(16, boardName.length);
+const sanitizeBoardName = (boardName) => boardName.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
+
 const sanitizeBoardId = (boardId) => boardId.replace('[', '').replace(']', '');
+
 const formatBoardData = (boardData) => boardData.map(board => ({
     boardName: board[0],
     boardId: board[1],
     connectionStatus: board[4],
     isRegistered: false,
 }));
-const prepareBoardListToShow = (boardDataExisting, boardListFromCliFormatted) => boardListFromCliFormatted.map(board => {
-    let boardToShow = board;
 
-    if(boardDataExisting[board.boardId]){
-        boardToShow.isRegistered = true;
+const prepareBoardList = (boardListFromServer, boardListFromCliFormatted) => boardListFromCliFormatted.map(board => {
+    let boardData = {...board};
+    const boardFromServer = _.find(boardListFromServer, {board_id: boardData.boardId});
+
+    if(boardFromServer){
+        boardData.isRegistered = true;
+        boardData.id = boardFromServer.id;
     }
 
-    return boardToShow;
+    return boardData;
 });
+
+const boardsTableHeader = ['Board name', 'Board id', 'Connection status', 'Registration status'];
 
 module.exports = {
     sanitizeBoardName,
     sanitizeBoardId,
     formatBoardData,
-    prepareBoardListToShow,
+    prepareBoardList,
+    boardsTableHeader,
 }
